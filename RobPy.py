@@ -119,7 +119,10 @@ def matriz_rotacao_x(theta: float) -> np.ndarray:
     :param theta: ângulo de rotação
     :return: matriz de rotação
     """
-    pass
+    a: float = theta * np.pi / 180
+    return np.asarray([[1, 0, 0],
+                       [0, np.cos(a), np.sin(a)],
+                       [0, -np.sin(a), np.cos(a)]])
 
 
 def matriz_rotacao_y(theta: float) -> np.ndarray:
@@ -129,7 +132,10 @@ def matriz_rotacao_y(theta: float) -> np.ndarray:
     :param theta: ângulo de rotação
     :return: matriz de rotação
     """
-    pass
+    a: float = theta * np.pi / 180
+    return np.asarray([[np.cos(a), 0, -np.sin(a)],
+                       [0, 1, 0],
+                       [np.sin(a), 0, np.cos(a)]])
 
 
 def matriz_rotacao_z(theta: float) -> np.ndarray:
@@ -139,7 +145,10 @@ def matriz_rotacao_z(theta: float) -> np.ndarray:
     :param theta: ângulo de rotação
     :return: matriz de rotação
     """
-    pass
+    a: float = theta * np.pi / 180
+    return np.asarray([[np.cos(a), np.sin(a), 0],
+                       [-np.sin(a), np.cos(a), 0],
+                       [0, 0, 1]])
 
 
 # Parte 3
