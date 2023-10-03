@@ -136,9 +136,11 @@ def matriz_rotacao_x(theta: float) -> np.ndarray:
     :return: matriz de rotação
     """
     a: float = theta * np.pi / 180
+    c = np.cos(a)
+    s = np.sin(a)
     return np.asarray([[1, 0, 0],
-                       [0, np.cos(a), np.sin(a)],
-                       [0, -np.sin(a), np.cos(a)]])
+                       [0, c, s],
+                       [0, -s, c]])
 
 
 def matriz_rotacao_y(theta: float) -> np.ndarray:
@@ -149,9 +151,11 @@ def matriz_rotacao_y(theta: float) -> np.ndarray:
     :return: matriz de rotação
     """
     a: float = theta * np.pi / 180
-    return np.asarray([[np.cos(a), 0, -np.sin(a)],
+    c = np.cos(a)
+    s = np.sin(a)
+    return np.asarray([[c, 0, -s],
                        [0, 1, 0],
-                       [np.sin(a), 0, np.cos(a)]])
+                       [s, 0, c]])
 
 
 def matriz_rotacao_z(theta: float) -> np.ndarray:
@@ -162,8 +166,10 @@ def matriz_rotacao_z(theta: float) -> np.ndarray:
     :return: matriz de rotação
     """
     a: float = theta * np.pi / 180
-    return np.asarray([[np.cos(a), np.sin(a), 0],
-                       [-np.sin(a), np.cos(a), 0],
+    c = np.cos(a)
+    s = np.sin(a)
+    return np.asarray([[c, s, 0],
+                       [-s, c, 0],
                        [0, 0, 1]])
 
 
@@ -176,25 +182,28 @@ def checa_vetor4(v: np.ndarray) -> None:
     :param v: vetor a verificar
     :return: nenhum.
     """
-    pass
+    if v.shape != (4, 1):
+        raise ValueError('O vetor deveria ser 4x1')
 
 
-def checa_matriz33(m: np.ndarray) -> None:
+def checa_matriz3x3(m: np.ndarray) -> None:
     """
     Verifica se uma matriz possui 3 linhas e 3 colunas. Caso não seja, levanta uma exceção.
     :param m: matriz a verificar
     :return: nenhum.
     """
-    pass
+    if m.shape != (3, 3):
+        raise ValueError('A matriz deveria ser 3x3')
 
 
-def checa_matriz44(m: np.ndarray) -> None:
+def checa_matriz4x4(m: np.ndarray) -> None:
     """
     Verifica se uma matriz possui 4 linhas e 4 colunas. Caso não seja, levanta uma exceção.
     :param m: matriz a verificar
     :return: nenhum.
     """
-    pass
+    if m.shape != (4, 4):
+        raise ValueError('A matriz deveria ser 4x4')
 
 
 def cria_vetor4(v3: np.ndarray) -> np.ndarray:
@@ -203,7 +212,9 @@ def cria_vetor4(v3: np.ndarray) -> np.ndarray:
     :param v3:
     :return:
     """
-    pass
+    if len(v3) != 3:
+        raise ValueError('A lista deve possuir 3 posições ')
+    return np.append(v3, [[1]], axis=0)
 
 
 def checa_matriz_rotacao(m3: np.ndarray, det_tol: float = 0.01) -> None:
@@ -214,7 +225,12 @@ def checa_matriz_rotacao(m3: np.ndarray, det_tol: float = 0.01) -> None:
     :param det_tol: tolerância do valor do determinante
     :return: não há
     """
-    pass
+    checa_matriz3x3(m3)
+    erro = np.abs(np.linalg.det(m3) - 1)
+    if det_tol < 0:
+        raise ValueError('A tolerância do determinante não deve ser um valor negativo.')
+    if erro > det_tol:
+        raise ValueError('Pelo valor da determinante, a matriz não é de rotação.')
 
 
 def cria_operador4(m_rot_b_a: np.ndarray = np.eye(3), v_o_a: np.ndarray = np.zeros([3, 1]), det_tol: float = 0.01) \
