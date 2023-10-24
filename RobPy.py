@@ -384,7 +384,7 @@ def eixo_reta_12(po1: np.ndarray, vs1: np.ndarray, po2: np.ndarray, vs2: np.ndar
     checa_vetor3(vs1)
     checa_vetor3(po2)
     checa_vetor3(vs2)
-    if angol<0:
+    if angtol<0:
         raise ValueError('O valor da tolerancia angular deve ser não negativo')
     ang = np.abs(ang_vetores(vs1, vs2))
     if (ang<angtol) or (np.abs(np.pi-ang)<angtol):
@@ -404,7 +404,12 @@ def ang_twist_dir_nc_rad(po1: np.ndarray, vs1: np.ndarray, po2: np.ndarray, vs2:
     :param angtol: Tolerância de ângulo entre as retas para decidir se são paralelas
     :return: Ângulo de torção do link com sinal direcional
     """
-    pass
+    pvs = produto_vetorial(vs1,vs2)
+    e12 = eixo_reta_12(po1, vs1, po2, vs2, angtol=angtol)
+
+    pe = produto_escalar(pvs, e12)
+
+    return ang_vetores(vs1, vs2) * np.sign(pe)
 
 
 def ang_twist_dir_ref_rad(vs1: np.ndarray, vs2: np.ndarray, vref: np.ndarray, projtol: float=1e-3) -> float:
@@ -417,4 +422,10 @@ def ang_twist_dir_ref_rad(vs1: np.ndarray, vs2: np.ndarray, vref: np.ndarray, pr
     :param projtol: Tolerância da projeção de vs1 e vs2 sobre vref para verificar se são perpendiculares
     :return: Ângulo de torção do link com sinal direcional
     """
-    pass
+    pvs = produto_vetorial(vs1, vs2)
+    pe = produto_escalar(pvs, vref)
+
+    if norma_vetor(vref - proj_vetores(vref, pvs) * np.signal(pe)) > projtol:
+        raise ValueError('O vetor de referência não possui a orientação apropriada')
+
+    return ang_vetores(vs1, vs2) * np.signal(pe)

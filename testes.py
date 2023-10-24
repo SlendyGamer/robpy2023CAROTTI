@@ -3,12 +3,9 @@
 import numpy as np
 import RobPy as rp
 
-R = rp.matriz_rotacao_y(77*np.pi/180)
-r = rp.cria_vetor3([1, 4, -3])
+po1 = rp.cria_vetor3([1, 0, 0])
+vs1 = rp.cria_vetor3([0, 1, 0])
+po2 = rp.cria_vetor3([0, 0, 1])
+vs2 = rp.cria_vetor3([-1, 0, 0])
 
-T = rp.cria_operador4(m_rot_b_a=R)
-
-print(T)
-print(np.linalg.inv(T))
-
-print(-R.T @ r)
+print(rp.ang_twist_dir_nc_rad(po1, vs1, po2, vs2)* 180 / np.pi)
